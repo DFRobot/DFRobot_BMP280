@@ -1,0 +1,29 @@
+#######################################
+# Syntax Coloring Map Servo
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Adafruit_BMP280	KEYWORD1	Adafruit_BMP280
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+readTemperatureValue	KEYWORD2
+readPressureValue	KEYWORD2
+readAltitudeValue		KEYWORD2
+readCoefficients	KEYWORD2
+write8  KEYWORD2
+read8   KEYWORD2
+read16  KEYWORD2
+read24  KEYWORD2
+readS16   KEYWORD2
+read16_LE  KEYWORD2
+readS16_LE  KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
