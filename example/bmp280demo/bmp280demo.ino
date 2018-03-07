@@ -16,31 +16,23 @@
 #include <Wire.h>
 #include "DFRobot_BMP280.h"
 
-DFRobot_BMP280 bmp280; 
+DFRobot_BMP280 bmp;
 
 void setup() {
-  Serial.begin(9600);
-  Serial.println("BMP280 demo");
-  
-  if (!bmp280.begin()) {  
-    Serial.println("Could not find a valid BMP280 sensor!");
-    while (1);
+  Serial.begin(115200);
+  while (!bmp.begin()) {  
+    Serial.println("Error initializing BMP280!");
+    delay(1000);
   }
 }
 
 void loop() {
-    Serial.print("Temperature = ");
-    Serial.print(bmp280.readTemperatureValue());
-    Serial.println(" *C");
-    
-    Serial.print("Pressure = ");
-    Serial.print(bmp280.readPressureValue());
-    Serial.println(" Pa");
-
-    Serial.print("Altitude = ");
-    Serial.print(bmp280.readAltitudeValue(1013.25)); // this should be adjusted to your local forcase
-    Serial.println(" m");
-    
-    Serial.println();
-    delay(2000);
+  Serial.print("Temperature: ");
+  Serial.print(bmp.readTemperature());
+  Serial.print(" Pressure: ");
+  Serial.print(bmp.readPressure());
+  Serial.print(" Altitude:");
+  Serial.println(bmp.readAltitude());
+  /* use a sampling time of at least 38ms */
+  delay(50);
 }

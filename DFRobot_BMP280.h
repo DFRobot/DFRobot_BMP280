@@ -1,140 +1,95 @@
-/*!
- * @file DFRobot_BMP280.h
- * @brief DFRobot's DFRobot_BMP280
- * @n DFRobot's Temperature、Pressure and Approx altitude
- *
- * @copyright	[DFRobot](http://www.dfrobot.com), 2016
- * @copyright	GNU Lesser General Public License
- *
- * @author [yuxiang](1137717512@qq.com)
- * @version  V1.0
- * @date  2016-12-6
- */
-#ifndef __DFRobot_BMP280_H__
-#define __DFRobot_BMP280_H__
+#ifndef DFRobot_BMP280_h
+#define DFRobot_BMP280_h
 
-#include "Arduino.h"
+#if(ARDUINO >= 100)
+    #include "Arduino.h"
+#else
+    #include "WProgram.h"
+#endif
+
 #include "Wire.h"
 
-/*I2C ADDRESS/BITS/SETTINGS*/
-#define BMP280_ADDRESS                (0x77)
-#define BMP280_CHIPID                 (0x58)
+/* Default Values */
+#define BMP280_DEFAULT_ADRESS   0x76
+#define BMP280_CHIP_ID          0x58
+#define BMP280_DEFAULT_MODE     0x03
+#define BMP280_DEFAULT_OSRS_P   0x07
+#define BMP280_DEFAULT_OSRS_T   0x02
+#define BMP280_DEFAULT_T_SB     0x00
+#define BMP280_DEFAULT_FILTER   0x07
 
-/*REGISTERS*/
-    enum
-    {
-      BMP280_REGISTER_DIG_T1              = 0x88,
-      BMP280_REGISTER_DIG_T2              = 0x8A,
-      BMP280_REGISTER_DIG_T3              = 0x8C,
+#define SEA_LEVEL_HPA           101325
 
-      BMP280_REGISTER_DIG_P1              = 0x8E,
-      BMP280_REGISTER_DIG_P2              = 0x90,
-      BMP280_REGISTER_DIG_P3              = 0x92,
-      BMP280_REGISTER_DIG_P4              = 0x94,
-      BMP280_REGISTER_DIG_P5              = 0x96,
-      BMP280_REGISTER_DIG_P6              = 0x98,
-      BMP280_REGISTER_DIG_P7              = 0x9A,
-      BMP280_REGISTER_DIG_P8              = 0x9C,
-      BMP280_REGISTER_DIG_P9              = 0x9E,
+/* Calibration Data Structure */
+typedef struct
+{
+  uint16_t dig_T1;
+  int16_t  dig_T2;
+  int16_t  dig_T3;
 
-      BMP280_REGISTER_CHIPID             = 0xD0,
-      BMP280_REGISTER_VERSION            = 0xD1,
-      BMP280_REGISTER_SOFTRESET          = 0xE0,
+  uint16_t dig_P1;
+  int16_t  dig_P2;
+  int16_t  dig_P3;
+  int16_t  dig_P4;
+  int16_t  dig_P5;
+  int16_t  dig_P6;
+  int16_t  dig_P7;
+  int16_t  dig_P8;
+  int16_t  dig_P9;
 
-      BMP280_REGISTER_CAL26              = 0xE1,  // R calibration stored in 0xE1-0xF0
-
-      BMP280_REGISTER_CONTROL            = 0xF4,
-      BMP280_REGISTER_CONFIG             = 0xF5,
-      BMP280_REGISTER_PRESSUREDATA       = 0xF7,
-      BMP280_REGISTER_TEMPDATA           = 0xFA,
-    };
-
-/*CALIBRATION DATA*/
-    typedef struct
-    {
-      uint16_t digT1;
-      int16_t  digT2;
-      int16_t  digT3;
-
-      uint16_t digP1;
-      int16_t  digP2;
-      int16_t  digP3;
-      int16_t  digP4;
-      int16_t  digP5;
-      int16_t  digP6;
-      int16_t  digP7;
-      int16_t  digP8;
-      int16_t  digP9;
-
-      uint8_t  digH1;
-      int16_t  digH2;
-      uint8_t  digH3;
-      int16_t  digH4;
-      int16_t  digH5;
-      int8_t   digH6;
-    } tBmp280CalibData;
-/*=========================================================================*/
+  uint8_t  dig_H1;
+  int16_t  dig_H2;
+  uint8_t  dig_H3;
+  int16_t  dig_H4;
+  int16_t  dig_H5;
+  int8_t   dig_H6;
+} bmp280_calib_data;
 
 class DFRobot_BMP280
 {
-  public:
-    DFRobot_BMP280();
 
-    bool  begin(uint8_t addr = BMP280_ADDRESS, uint8_t chipid = BMP280_CHIPID);
-	/**************************************************************************/
-    /*!
-        @brief  Reads the temperature
-    */
-    /**************************************************************************/
-    float readTemperatureValue(void);
-	/**************************************************************************/
-    /*!
-        @brief Reads the pressue
-    */
-    /**************************************************************************/
-    float readPressureValue(void);
-	/**************************************************************************/
-    /*!
-        @brief Reads the altitude
-    */
-    /**************************************************************************/
-    float readAltitudeValue(float seaLevelhPa = 1013.25);
-	
-  private:
-    /**************************************************************************/
-    /*!
-        @brief  Reads the factory-set coefficients
-    */
-    /**************************************************************************/
-    void readCoefficients(void);
-    /*************************************************************************/
-    /*!
-        @brief  Writes an 8 bit value over I2C
-    */
-    /*************************************************************************/
-    void      write8(byte reg, byte value);
-	/************************************************************************/
-   /*!
-       @brief  Reads an 8 bit value over I2C
-   */
-   /**************************************************************************/
-    uint8_t   read8(byte reg);
-	 /************************************************************************/
-   /*!
-       @brief  Reads a 16 bit value over I2C
-   */
-   /**************************************************************************/
-    uint16_t  read16(byte reg);
-	
-    uint32_t  read24(byte reg);
-    int16_t   readS16(byte reg);
-    uint16_t  read16_LE(byte reg); // little endian
-    int16_t   readS16_LE(byte reg); // little endian
+public:
 
-    uint8_t   _i2caddr;
-    int32_t t_fine;
+  DFRobot_BMP280(uint8_t i2caddr = BMP280_DEFAULT_ADRESS);
 
-    tBmp280CalibData _bmp280Calib;
+  bool begin(uint8_t mode = BMP280_DEFAULT_MODE,
+                uint8_t osrs_p = BMP280_DEFAULT_OSRS_P,
+                uint8_t osrs_t = BMP280_DEFAULT_OSRS_T,
+                uint8_t t_sb = BMP280_DEFAULT_T_SB,
+                uint8_t filter = BMP280_DEFAULT_FILTER);
+  void setPowerMode(uint8_t);
+  void setPressureOverSampling(uint8_t);
+  void setTemperatureOverSampling(uint8_t);
+  void setStandbyTime(uint8_t);
+  void setIIRcoeff(uint8_t);
+
+  uint8_t getPowerMode(void);
+  uint8_t getPressureOverSampling(void);
+  uint8_t getTemperatureOverSampling(void);
+  uint8_t getStandbyTime(void);
+  uint8_t getIIRcoeff(void);
+
+  float readTemperature(void);
+  float readPressure(void);
+  float readAltitude(float seaLevel = SEA_LEVEL_HPA);
+
+private:
+  boolean _ready;
+  uint8_t _addr;
+  uint8_t _rwError;
+  int32_t t_fine;
+
+  bmp280_calib_data _bmp280_calib;
+
+  void readCoefficients(void);
+
+  uint32_t read24(byte);
+  uint16_t read16(byte);
+  uint8_t read8(byte);
+  int16_t  readS16(byte);
+  uint16_t read16_LE(byte); // little endian
+  int16_t  readS16_LE(byte); // little endian
+  void write8(byte, byte);
 
 };
 
