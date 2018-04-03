@@ -37,17 +37,17 @@ Download the zip file first to use this library and uncompress it to a folder na
 /*
  * @brief  Read temperature value.
  */
-    float readTemperature();
+    float readTemperatureValue();
 /*
  * @brief  Read Pressure value.
  */
-    float readPressure();
+    float readPressureValue();
 /*
  * @brief  Read Altitude value.
  *         Altitude is calculated based on temperature and sea level pressure
  *         p = 101325 * (1-(0.0065*h/288.15))^5.25588; p=local pressure; h=altitude
  */
-    float readAltitude();
+    float readAltitudeValue();
 
 ```
 
