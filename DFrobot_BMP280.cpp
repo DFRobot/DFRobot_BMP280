@@ -213,7 +213,7 @@ uint8_t DFRobot_BMP280::getIIRcoeff(void){
 }
 
 /* -- Temperature -------------------------------------------------------------
- * algorithm based on Adafruit BMP280 Library
+ * algorithm based on BMP280 Library
  * use burst reads
  * calibration data used to calculate temperature
  --------------------------------------------------------------------------- */
@@ -238,7 +238,7 @@ float DFRobot_BMP280::readTemperature(void) {
 }
 
 /* -- Pressure ----------------------------------------------------------------
- * algorithm based on Adafruit BMP280 Library
+ * algorithm based on BMP280 Library
  * use burst reads
  * calibration data and temperature used to calculate pressure
  --------------------------------------------------------------------------- */
@@ -272,10 +272,11 @@ float DFRobot_BMP280::readPressure(void) {
 }
 
 /* -- Altitude -------------------------------------------------------
- * temperature is calculated based on temperature and sea level pressure
+ * Altitude is calculated based on temperature and sea level pressure
  * p = 101325 * (1-(0.0065*h/288.15))^5.25588; p=local pressure; h=altitude
  * (invert equation!)
  ---------------------------------------------------------------------------- */
+ 
 float DFRobot_BMP280::readAltitude(float seaLevel) {
   float altitude;
 
@@ -288,10 +289,11 @@ float DFRobot_BMP280::readAltitude(float seaLevel) {
   return altitude;
 }
 
+
 // =================================================================== PRIVATE
 
 /* -- Reads the factory set coefficients --------------------------------------
-* algorithm based on Adafruit BMP280 Library
+* algorithm based on BMP280 Library
 ---------------------------------------------------------------------------- */
 void DFRobot_BMP280::readCoefficients(void)
 {

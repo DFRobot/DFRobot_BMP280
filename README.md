@@ -1,15 +1,68 @@
 # BMP280
 DFRobot's Temperature、Pressure and Approx altitude
 
- * file playDemo.ino
- * brief DFRobot's Temperature、Pressure and Approx altitude
- * @n [Get the module here](等上架后添加商品购买链接)
- * @n This example Set the volume size and play music snippet.
- * @n [Connection and Diagram](等上架后添加wiki链接)
+## DFRobot_BMP280 Library for Arduino
+---------------------------------------------------------
+Provides an Arduino library for reading and interpreting Bosch BMP280 data over I2C.Used to read current temperature and air pressure and calculate altitude.
+
+## Table of Contents
+
+* [Installation](#installation)
+* [Methods](#methods)
+* [Compatibility](#compatibility)
+* [History](#history)
+* [Credits](#credits)
+
+<snippet>
+<content>
+
+## Installation
+
+To use this library download the zip file, uncompress it to a folder named DFRobot_BMP280. 
+Download the zip file first to use this library and uncompress it to a folder named DFRobot_BMP280. 
+
+## Methods
+
+```C++
+
+/*
+ * @brief init BMP280 device
  *
- * Copyright	[DFRobot](http://www.dfrobot.com), 2016
- * Copyright	GNU Lesser General Public License
- *
- * @author [yuxiang](1137717512@qq.com)
- * version  V1.0
- * date  2016-12-6
+ * @return result
+ *    ture : falid
+ *    false : succussful
+ */
+    bool begin();
+
+/*
+ * @brief  Read temperature value.
+ */
+    float readTemperature();
+/*
+ * @brief  Read Pressure value.
+ */
+    float readPressure();
+/*
+ * @brief  Read Altitude value.
+ *         Altitude is calculated based on temperature and sea level pressure
+ *         p = 101325 * (1-(0.0065*h/288.15))^5.25588; p=local pressure; h=altitude
+ */
+    float readAltitude();
+
+```
+
+## Compatibility
+
+MCU                | Work Well | Work Wrong | Untested  | Remarks
+------------------ | :----------: | :----------: | :---------: | -----
+FireBeetle-ESP32  |      √       |             |            | 
+FireBeetle-ESP8266  |      √       |             |            | 
+Arduino uno |       √      |             |            | 
+
+## History
+
+- Nov 31, 2018 - Version 0.1 released.
+
+## Credits
+
+Written by yuxiang, 2018. (Welcome to our [website](https://www.dfrobot.com/))
