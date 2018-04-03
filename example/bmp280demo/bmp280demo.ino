@@ -28,11 +28,11 @@ void setup() {
 
 void loop() {
   Serial.print("Temperature: ");
-  Serial.print(bmp.readTemperature());
+  Serial.print(bmp.readTemperatureValue());
   Serial.print(" Pressure: ");
-  Serial.print(bmp.readPressure());
+  Serial.print(bmp.readPressureValue());
   Serial.print(" Altitude:");
-  Serial.println(bmp.readAltitude());
+  Serial.println(bmp.readAltitudeValue());
   /* use a sampling time of at least 38ms */
   delay(50);
 }
