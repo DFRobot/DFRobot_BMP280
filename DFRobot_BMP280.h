@@ -1,141 +1,248 @@
-/*!
- * @file DFRobot_BMP280.h
- * @brief DFRobot's DFRobot_BMP280
- * @n DFRobot's Temperature、Pressure and Approx altitude
- *
- * @copyright	[DFRobot](http://www.dfrobot.com), 2016
- * @copyright	GNU Lesser General Public License
- *
- * @author [yuxiang](1137717512@qq.com)
- * @version  V1.0
- * @date  2016-12-6
- */
-#ifndef __DFRobot_BMP280_H__
-#define __DFRobot_BMP280_H__
+#ifndef DFROBOT_BMP280_H
+#define DFROBOT_BMP280_H
 
 #include "Arduino.h"
 #include "Wire.h"
 
-/*I2C ADDRESS/BITS/SETTINGS*/
-#define BMP280_ADDRESS                (0x76)
-#define BMP280_ADDRESS1                (0x77)
-#define BMP280_CHIPID                 (0x58)
+#ifndef PROGMEM
+# define PROGMEM
+#endif
 
-/*REGISTERS*/
-    enum
-    {
-      BMP280_REGISTER_DIG_T1              = 0x88,
-      BMP280_REGISTER_DIG_T2              = 0x8A,
-      BMP280_REGISTER_DIG_T3              = 0x8C,
-
-      BMP280_REGISTER_DIG_P1              = 0x8E,
-      BMP280_REGISTER_DIG_P2              = 0x90,
-      BMP280_REGISTER_DIG_P3              = 0x92,
-      BMP280_REGISTER_DIG_P4              = 0x94,
-      BMP280_REGISTER_DIG_P5              = 0x96,
-      BMP280_REGISTER_DIG_P6              = 0x98,
-      BMP280_REGISTER_DIG_P7              = 0x9A,
-      BMP280_REGISTER_DIG_P8              = 0x9C,
-      BMP280_REGISTER_DIG_P9              = 0x9E,
-
-      BMP280_REGISTER_CHIPID             = 0xD0,
-      BMP280_REGISTER_VERSION            = 0xD1,
-      BMP280_REGISTER_SOFTRESET          = 0xE0,
-
-      BMP280_REGISTER_CAL26              = 0xE1,  // R calibration stored in 0xE1-0xF0
-
-      BMP280_REGISTER_CONTROL            = 0xF4,
-      BMP280_REGISTER_CONFIG             = 0xF5,
-      BMP280_REGISTER_PRESSUREDATA       = 0xF7,
-      BMP280_REGISTER_TEMPDATA           = 0xFA,
-    };
-
-/*CALIBRATION DATA*/
-    typedef struct
-    {
-      uint16_t digT1;
-      int16_t  digT2;
-      int16_t  digT3;
-
-      uint16_t digP1;
-      int16_t  digP2;
-      int16_t  digP3;
-      int16_t  digP4;
-      int16_t  digP5;
-      int16_t  digP6;
-      int16_t  digP7;
-      int16_t  digP8;
-      int16_t  digP9;
-
-      uint8_t  digH1;
-      int16_t  digH2;
-      uint8_t  digH3;
-      int16_t  digH4;
-      int16_t  digH5;
-      int8_t   digH6;
-    } tBmp280CalibData;
-/*=========================================================================*/
-
-class DFRobot_BMP280
-{
-  public:
-    DFRobot_BMP280();
-
-    bool  begin(uint8_t addr = BMP280_ADDRESS, uint8_t chipid = BMP280_CHIPID);
-	/**************************************************************************/
-    /*!
-        @brief  Reads the temperature
-    */
-    /**************************************************************************/
-    float readTemperatureValue(void);
-	/**************************************************************************/
-    /*!
-        @brief Reads the pressue
-    */
-    /**************************************************************************/
-    float readPressureValue(void);
-	/**************************************************************************/
-    /*!
-        @brief Reads the altitude
-    */
-    /**************************************************************************/
-    float readAltitudeValue(float seaLevelhPa = 1013.25);
-	
-  private:
-    /**************************************************************************/
-    /*!
-        @brief  Reads the factory-set coefficients
-    */
-    /**************************************************************************/
-    void readCoefficients(void);
-    /*************************************************************************/
-    /*!
-        @brief  Writes an 8 bit value over I2C
-    */
-    /*************************************************************************/
-    void      write8(byte reg, byte value);
-	/************************************************************************/
-   /*!
-       @brief  Reads an 8 bit value over I2C
+class DFRobot_BMP280 {
+// defines
+public:
+  /**
+   * @brief Enum global status
    */
-   /**************************************************************************/
-    uint8_t   read8(byte reg);
-	 /************************************************************************/
-   /*!
-       @brief  Reads a 16 bit value over I2C
+  typedef enum {
+    eStatusOK,
+    eStatusErr,
+    eStatusErrDeviceNotDetected,
+    eStatusErrParameter
+  } eStatus_t;
+
+  typedef struct {
+    uint16_t    t1;
+    int16_t     t2, t3;
+    uint16_t    p1;
+    int16_t     p2, p3, p4, p5, p6, p7, p8, p9;
+    uint16_t    reserved0;
+  } sCalibrateDig_t;
+
+  typedef struct {
+    uint8_t   im_update: 1;
+    uint8_t   reserved: 2;
+    uint8_t   measuring: 1;
+  } sRegStatus_t;
+
+  /**
+   * @brief Enum control measurement mode (power)
    */
-   /**************************************************************************/
-    uint16_t  read16(byte reg);
-	
-    uint32_t  read24(byte reg);
-    int16_t   readS16(byte reg);
-    uint16_t  read16_LE(byte reg); // little endian
-    int16_t   readS16_LE(byte reg); // little endian
+  typedef enum {
+    eCtrlMeasMode_sleep,
+    eCtrlMeasMode_forced,
+    eCtrlMeasMode_normal = 0x03
+  } eCtrlMeasMode_t;
 
-    uint8_t   _i2caddr;
-    int32_t t_fine;
+  /**
+   * @brief Enum sampling
+   */
+  typedef enum {
+    eSampling_no,
+    eSampling_X1,
+    eSampling_X2,
+    eSampling_X4,
+    eSampling_X8,
+    eSampling_X16
+  } eSampling_t;
 
-    tBmp280CalibData _bmp280Calib;
+  typedef struct {
+    uint8_t   mode: 2;
+    uint8_t   osrs_p: 3;
+    uint8_t   osrs_t: 3;
+  } sRegCtrlMeas_t;
+
+  typedef enum {
+    eConfigSpi3w_en_disable,
+    eConfigSpi3w_en_enable
+  } eConfigSpi3w_en_t;
+
+  /**
+   * @brief Enum config filter
+   */
+  typedef enum {
+    eConfigFilter_off,
+    eConfigFilter_X2,
+    eConfigFilter_X4,
+    eConfigFilter_X8,
+    eConfigFilter_X16
+  } eConfigFilter_t;
+
+  /**
+   * @brief Enum config standby time, unit ms
+   */
+  typedef enum {
+    eConfigTStandby_0_5,    // 0.5 ms
+    eConfigTStandby_62_5,
+    eConfigTStandby_125,
+    eConfigTStandby_250,
+    eConfigTStandby_500,
+    eConfigTStandby_1000,
+    eConfigTStandby_2000,
+    eConfigTStandby_4000
+  } eConfigTStandby_t;
+
+  typedef struct {
+    uint8_t   spi3w_en: 1;
+    uint8_t   reserved1: 1;
+    uint8_t   filter: 3;
+    uint8_t   t_sb: 3;
+  } sRegConfig_t;
+
+  typedef struct {
+    uint8_t   msb, lsb;
+    uint8_t   reserved: 4;
+    uint8_t   xlsb: 4;
+  } sRegPress_t;
+
+  typedef struct {
+    uint8_t   msb, lsb;
+    uint8_t   reserved: 4;
+    uint8_t   xlsb: 4;
+  } sRegTemp_t;
+
+  #define BMP280_REG_START    0x88
+  typedef struct {
+    sCalibrateDig_t   calib;
+    uint8_t   reserved0[(0xd0 - 0xa1 - 1)];
+    uint8_t   chip_id;
+    #define BMP280_REG_CHIP_ID_DEFAULT    0x58
+    uint8_t   reserved1[(0xe0 - 0xd0 - 1)];
+    uint8_t   reset;
+    uint8_t   reserved2[(0xf3 - 0xe0 - 1)];
+    sRegStatus_t    status;
+    sRegCtrlMeas_t    ctrlMeas;
+    sRegConfig_t      config;
+    uint8_t   reserved3;
+    sRegPress_t   press;
+    sRegTemp_t    temp;
+  } sRegs_t;
+
+// functions
+public:
+  DFRobot_BMP280();
+
+  /**
+   * @brief begin Sensor begin
+   * @return Enum of eStatus_t
+   */
+  eStatus_t   begin();
+
+  /**
+   * @brief getTemperature Get temperature
+   * @return Temprature in Celsius
+   */
+  float       getTemperature();
+
+  /**
+   * @brief getPressure Get pressure
+   * @return Pressure in pa
+   */
+  uint32_t    getPressure();
+
+  /**
+   * @brief calAltitude Calculate altitude
+   * @param seaLevelPressure Sea level pressure
+   * @param pressure Pressure in pa
+   * @return Altitude in meter
+   */
+  float       calAltitude(float seaLevelPressure, uint32_t pressure);
+
+  /**
+   * @brief reset Reset sensor
+   */
+  void    reset();
+
+  /**
+   * @brief setCtrlMeasMode Set control measure mode
+   * @param eMode One enum of eCtrlMeasMode_t
+   */
+  void    setCtrlMeasMode(eCtrlMeasMode_t eMode);
+
+  /**
+   * @brief setCtrlMeasSamplingTemp Set control measure temperature oversampling
+   * @param eSampling One enum of eSampling_t
+   */
+  void    setCtrlMeasSamplingTemp(eSampling_t eSampling);
+
+  /**
+   * @brief setCtrlMeasSamplingPress Set control measure pressure oversampling
+   * @param eSampling One enum of eSampling_t
+   */
+  void    setCtrlMeasSamplingPress(eSampling_t eSampling);
+
+  /**
+   * @brief setConfigFilter Set config filter
+   * @param eFilter One enum of eConfigFilter_t
+   */
+  void    setConfigFilter(eConfigFilter_t eFilter);
+
+  /**
+   * @brief setConfigTStandby Set config standby time
+   * @param eT One enum of eConfigTStandby_t
+   */
+  void    setConfigTStandby(eConfigTStandby_t eT);
+
+protected:
+  void    getCalibrate();
+
+  int32_t   getTemperatureRaw();
+  int32_t   getPressureRaw();
+
+  uint8_t   getReg(uint8_t reg);
+  void      writeRegBits(uint8_t reg, uint8_t flied, uint8_t val);
+
+  virtual void    writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len) = 0;
+  virtual void    readReg(uint8_t reg, uint8_t *pBuf, uint16_t len) = 0;
+
+// variables
+public:
+  /**
+   * @brief lastOperateStatus Last operate status
+   */
+  eStatus_t   lastOperateStatus;
+
+protected:
+  int32_t   _t_fine;
+
+  sCalibrateDig_t   _sCalib;
+};
+
+class DFRobot_BMP280_IIC : public DFRobot_BMP280 {
+public:
+  /**
+   * @brief Enum pin sdo states
+   */
+  typedef enum {
+    eSdo_low,
+    eSdo_high
+  } eSdo_t;
+
+  /**
+   * @brief DFRobot_BMP280_IIC
+   * @param pWire Which TwoWire peripheral to operate
+   * @param eSdo Pin sdo status
+   */
+  DFRobot_BMP280_IIC(TwoWire *pWire, eSdo_t eSdo);
+
+protected:
+  void    writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len);
+  void    readReg(uint8_t reg, uint8_t *pBuf, uint16_t len);
+
+protected:
+  TwoWire   *_pWire;
+
+  uint8_t   _addr;
 
 };
 
