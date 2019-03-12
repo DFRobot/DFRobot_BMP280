@@ -42,6 +42,7 @@ void setup()
     delay(2000);
   }
   Serial.println("bmp begin success");
+  delay(100);
 }
 
 void loop()
