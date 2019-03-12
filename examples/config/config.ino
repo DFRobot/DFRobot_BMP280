@@ -48,6 +48,8 @@ void setup()
   bmp.setCtrlMeasSamplingTemp(BMP::eSampling_X8);     // set temperature over sampling
   bmp.setCtrlMeasSamplingPress(BMP::eSampling_X8);    // set pressure over sampling
   bmp.setCtrlMeasMode(BMP::eCtrlMeasMode_normal);     // set control measurement mode
+
+  delay(100);
 }
 
 void loop()
