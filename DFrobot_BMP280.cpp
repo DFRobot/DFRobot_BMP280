@@ -78,8 +78,9 @@ float DFRobot_BMP280::getTemperature()
     v2 = (((((raw >> 4) - ((int32_t) _sCalib.t1)) * ((raw >> 4) - ((int32_t) _sCalib.t1))) >> 12) * ((int32_t) _sCalib.t3)) >> 14;
     _t_fine = v1 + v2;
     rslt = (_t_fine * 5 + 128) >> 8;
+    return (rslt / 100);
   }
-  return (rslt / 100);
+  return 0;
 }
 
 uint32_t DFRobot_BMP280::getPressure()
@@ -101,8 +102,9 @@ uint32_t DFRobot_BMP280::getPressure()
     v1 = (((int64_t) _sCalib.p9) * (rslt >> 13) * (rslt >> 13)) >> 25;
     v2 = (((int64_t) _sCalib.p8) * rslt) >> 19;
     rslt = ((rslt + v1 + v2) >> 8) + (((int64_t) _sCalib.p7) << 4);
+    return (uint32_t) (rslt / 256);
   }
-  return (uint32_t) (rslt / 256);
+  return 0;
 }
 
 float DFRobot_BMP280::calAltitude(float seaLevelPressure, uint32_t pressure)
