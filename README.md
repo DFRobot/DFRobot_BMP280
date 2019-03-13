@@ -3,7 +3,8 @@ DFRobot's Temperature, Pressure and Approx altitude
 
 ## DFRobot_BMP280 Library for Arduino
 ---------------------------------------------------------
-Provides an Arduino library for reading and interpreting Bosch BMP280 data over I2C.Used to read current temperature and air pressure and calculate altitude.
+Provides an Arduino library for reading and interpreting Bosch BMP280 data over I2C. <br>
+Used to read current temperature, air pressure and calculate altitude.
 
 ## Table of Contents
 
