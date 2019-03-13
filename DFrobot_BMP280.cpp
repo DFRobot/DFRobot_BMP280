@@ -58,11 +58,11 @@ DFRobot_BMP280::eStatus_t DFRobot_BMP280::begin()
     reset();
     delay(200);
     getCalibrate();
-    setCtrlMeasMode(eCtrlMeasMode_normal);
     setCtrlMeasSamplingPress(eSampling_X8);
     setCtrlMeasSamplingTemp(eSampling_X8);
     setConfigFilter(eConfigFilter_off);
     setConfigTStandby(eConfigTStandby_125);
+    setCtrlMeasMode(eCtrlMeasMode_normal);    // set control measurement mode to make these settings effective
   } else
     lastOperateStatus = eStatusErrDeviceNotDetected;
   return lastOperateStatus;

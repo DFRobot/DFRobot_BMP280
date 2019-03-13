@@ -48,7 +48,7 @@ void setup()
   bmp.setConfigTStandby(BME::eConfigTStandby_125);    // set standby time
   bmp.setCtrlMeasSamplingTemp(BME::eSampling_X8);     // set temperature over sampling
   bmp.setCtrlMeasSamplingPress(BME::eSampling_X8);    // set pressure over sampling
-  bmp.setCtrlMeasMode(BME::eCtrlMeasMode_normal);     // set control measurement mode
+  bmp.setCtrlMeasMode(BME::eCtrlMeasMode_normal);     // set control measurement mode to make these settings effective
 
   delay(100);
 }
