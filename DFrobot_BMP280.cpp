@@ -85,6 +85,7 @@ float DFRobot_BMP280::getTemperature()
 
 uint32_t DFRobot_BMP280::getPressure()
 {
+  getTemperature();   // update _t_fine
   int32_t   raw = getPressureRaw();
   int64_t   rslt = 0;
   int64_t   v1, v2;

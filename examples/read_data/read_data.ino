@@ -14,20 +14,20 @@
 #include "DFRobot_BMP280.h"
 #include "Wire.h"
 
-typedef DFRobot_BMP280_IIC    BMP;    // ******** use abbreviations instead of full names ********
+typedef DFRobot_BMP280_IIC    BME;    // ******** use abbreviations instead of full names ********
 
-BMP   bmp(&Wire, BMP::eSdo_low);
+BME   bme(&Wire, BME::eSdo_low);
 
 #define SEA_LEVEL_PRESSURE    1015.0f   // sea level pressure
 
 // show last sensor operate status
-void printLastOperateStatus(BMP::eStatus_t eStatus)
+void printLastOperateStatus(BME::eStatus_t eStatus)
 {
   switch(eStatus) {
-  case BMP::eStatusOK:    Serial.println("everything ok"); break;
-  case BMP::eStatusErr:   Serial.println("unknow error"); break;
-  case BMP::eStatusErrDeviceNotDetected:    Serial.println("device not detected"); break;
-  case BMP::eStatusErrParameter:    Serial.println("parameter error"); break;
+  case BME::eStatusOK:    Serial.println("everything ok"); break;
+  case BME::eStatusErr:   Serial.println("unknow error"); break;
+  case BME::eStatusErrDeviceNotDetected:    Serial.println("device not detected"); break;
+  case BME::eStatusErrParameter:    Serial.println("parameter error"); break;
   default: Serial.println("unknow status"); break;
   }
 }
@@ -35,11 +35,11 @@ void printLastOperateStatus(BMP::eStatus_t eStatus)
 void setup()
 {
   Serial.begin(115200);
-  bmp.reset();
+  bme.reset();
   Serial.println("bmp read data test");
-  while(bmp.begin() != BMP::eStatusOK) {
+  while(bme.begin() != BME::eStatusOK) {
     Serial.println("bmp begin faild");
-    printLastOperateStatus(bmp.lastOperateStatus);
+    printLastOperateStatus(bme.lastOperateStatus);
     delay(2000);
   }
   Serial.println("bmp begin success");
@@ -48,9 +48,9 @@ void setup()
 
 void loop()
 {
-  float   temp = bmp.getTemperature();
-  uint32_t    press = bmp.getPressure();
-  float   alti = bmp.calAltitude(SEA_LEVEL_PRESSURE, press);
+  float   temp = bme.getTemperature();
+  uint32_t    press = bme.getPressure();
+  float   alti = bme.calAltitude(SEA_LEVEL_PRESSURE, press);
 
   Serial.println();
   Serial.println("======== start print ========");
