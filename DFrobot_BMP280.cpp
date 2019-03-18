@@ -181,13 +181,13 @@ uint8_t DFRobot_BMP280::getReg(uint8_t reg)
   return temp;
 }
 
-void DFRobot_BMP280::writeRegBits(uint8_t reg, uint8_t flied, uint8_t val)
+void DFRobot_BMP280::writeRegBits(uint8_t reg, uint8_t field, uint8_t val)
 {
-  __DBG_CODE(Serial.print("reg: "); Serial.print(reg, HEX); Serial.print(" flied: "); Serial.print(flied, HEX); Serial.print(" val: "); Serial.print(val, HEX));
+  __DBG_CODE(Serial.print("reg: "); Serial.print(reg, HEX); Serial.print(" flied: "); Serial.print(field, HEX); Serial.print(" val: "); Serial.print(val, HEX));
 
   uint8_t   temp;
   readReg(reg, (uint8_t*) &temp, sizeof(temp));
-  temp &= ~flied;
+  temp &= ~field;
   temp |= val;
   writeReg(reg, (uint8_t*) &temp, sizeof(temp));
 }
