@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license     The MIT License (MIT)
- * @author [Wuxiao](xiao.wu@dfrobot.com)
+ * @author [Frank](jiehan.guo@dfrobot.com)
  * @version  V1.0
  * @date  2019-03-12
  * @url https://github.com/DFRobot/DFRobot_BMP280
