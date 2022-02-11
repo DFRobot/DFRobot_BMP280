@@ -1,14 +1,14 @@
 /*!
- * read_data.ino
+ * @file readData.ino
+ * @brief Download this demo to test simple read from bmp280, connect sensor through IIC interface.
+ * @n  Data will print on your serial monitor
  *
- * Download this demo to test simple read from bmp280, connect sensor through IIC interface
- * Data will print on your serial monitor
- *
- * Copyright   [DFRobot](http://www.dfrobot.com), 2016
- * Copyright   GNU Lesser General Public License
- *
- * version  V1.0
- * date  12/03/2019
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT License (MIT)
+ * @author [Wuxiao](xiao.wu@dfrobot.com)
+ * @version  V1.0
+ * @date  2019-03-12
+ * @url https://github.com/DFRobot/DFRobot_BMP280
  */
 
 #include "DFRobot_BMP280.h"
@@ -16,7 +16,7 @@
 
 typedef DFRobot_BMP280_IIC    BMP;    // ******** use abbreviations instead of full names ********
 
-BMP   bmp(&Wire, BMP::eSdo_low);
+BMP   bmp(&Wire, BMP::eSdoLow);
 
 #define SEA_LEVEL_PRESSURE    1015.0f   // sea level pressure
 

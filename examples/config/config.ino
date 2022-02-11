@@ -1,14 +1,14 @@
 /*!
- * config.ino
+ * @file config.ino
+ * @brief Download this demo to test config to bmp280, connect sensor through IIC interface.
+ * @n  Data will print on your serial monitor.
  *
- * Download this demo to test config to bmp280, connect sensor through IIC interface
- * Data will print on your serial monitor
- *
- * Copyright   [DFRobot](http://www.dfrobot.com), 2016
- * Copyright   GNU Lesser General Public License
- *
- * version  V1.0
- * date  12/03/2019
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT License (MIT)
+ * @author [Wuxiao](xiao.wu@dfrobot.com)
+ * @version  V1.0
+ * @date  2019-03-12
+ * @url https://github.com/DFRobot/DFRobot_BMP280
  */
 
 #include "DFRobot_BMP280.h"
@@ -16,7 +16,7 @@
 
 typedef DFRobot_BMP280_IIC    BMP;    // ******** use abbreviations instead of full names ********
 
-BMP   bmp(&Wire, BMP::eSdo_low);
+BMP   bmp(&Wire, BMP::eSdoLow);
 
 #define SEA_LEVEL_PRESSURE    1015.0f   // sea level pressure
 
@@ -48,7 +48,7 @@ void setup()
   bmp.setConfigTStandby(BMP::eConfigTStandby_125);    // set standby time
   bmp.setCtrlMeasSamplingTemp(BMP::eSampling_X8);     // set temperature over sampling
   bmp.setCtrlMeasSamplingPress(BMP::eSampling_X8);    // set pressure over sampling
-  bmp.setCtrlMeasMode(BMP::eCtrlMeasMode_normal);     // set control measurement mode to make these settings effective
+  bmp.setCtrlMeasMode(BMP::eCtrlMeasModeNormal);     // set control measurement mode to make these settings effective
 
   delay(100);
 }

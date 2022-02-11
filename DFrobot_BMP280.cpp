@@ -1,22 +1,15 @@
-/*
- MIT License
-
- Copyright (C) <2019> <@DFRobot Frank>
-
-　Permission is hereby granted, free of charge, to any person obtaining a copy of this
-　software and associated documentation files (the "Software"), to deal in the Software
-　without restriction, including without limitation the rights to use, copy, modify,
-　merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-　permit persons to whom the Software is furnished to do so.
-
-　The above copyright notice and this permission notice shall be included in all copies or
-　substantial portions of the Software.
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
- FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+/*!
+ * @file DFRobot_BMP280.cpp
+ * @brief Provides an Arduino library for reading and interpreting Bosch BMP280 data over I2C. 
+ * @n Used to read current temperature, air pressure and calculate altitude.
+ *
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT License (MIT)
+ * @author [Frank](jiehan.guo@dfrobot.com)
+ * @version  V1.0
+ * @date  2019-03-12
+ * @url https://github.com/DFRobot/DFRobot_BMP280
+ */
 
 #include "DFRobot_BMP280.h"
 
@@ -62,7 +55,7 @@ DFRobot_BMP280::eStatus_t DFRobot_BMP280::begin()
     setCtrlMeasSamplingTemp(eSampling_X8);
     setConfigFilter(eConfigFilter_off);
     setConfigTStandby(eConfigTStandby_125);
-    setCtrlMeasMode(eCtrlMeasMode_normal);    // set control measurement mode to make these settings effective
+    setCtrlMeasMode(eCtrlMeasModeNormal);    // set control measurement mode to make these settings effective
   } else
     lastOperateStatus = eStatusErrDeviceNotDetected;
   return lastOperateStatus;
@@ -195,7 +188,7 @@ void DFRobot_BMP280::writeRegBits(uint8_t reg, uint8_t field, uint8_t val)
 DFRobot_BMP280_IIC::DFRobot_BMP280_IIC(TwoWire *pWire, eSdo_t eSdo)
 {
   _pWire = pWire;
-  if(eSdo == eSdo_low)
+  if(eSdo == eSdoLow)
     _addr = 0x76;
   else
     _addr = 0x77;

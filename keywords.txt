@@ -1,5 +1,5 @@
-eSdo_low	LITERAL1
-eSdo_high	LITERAL1
+eSdoLow	LITERAL1
+eSdoHigh	LITERAL1
 eSdo_t	LITERAL1
 
 DFRobot_BMP280_IIC	KEYWORD1
@@ -12,9 +12,9 @@ eStatusErrDeviceNotDetected	LITERAL1
 eStatusErrParameter	LITERAL1
 eStatus_t	LITERAL1
 
-eCtrlMeasMode_sleep	LITERAL1
-eCtrlMeasMode_forced	LITERAL1
-eCtrlMeasMode_normal	LITERAL1
+eCtrlMeasModeSleep	LITERAL1
+eCtrlMeasModeForced	LITERAL1
+eCtrlMeasModeNormal	LITERAL1
 eCtrlMeasMode_t	LITERAL1
 
 eSampling_no	LITERAL1

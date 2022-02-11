@@ -1,22 +1,15 @@
-/*
- MIT License
-
- Copyright (C) <2019> <@DFRobot Frank>
-
-　Permission is hereby granted, free of charge, to any person obtaining a copy of this
-　software and associated documentation files (the "Software"), to deal in the Software
-　without restriction, including without limitation the rights to use, copy, modify,
-　merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-　permit persons to whom the Software is furnished to do so.
-
-　The above copyright notice and this permission notice shall be included in all copies or
-　substantial portions of the Software.
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
- FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+/*!
+ * @file DFRobot_BMP280.h
+ * @brief Provides an Arduino library for reading and interpreting Bosch BMP280 data over I2C. 
+ * @n Used to read current temperature, air pressure and calculate altitude.
+ *
+ * @copyright   Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
+ * @license     The MIT License (MIT)
+ * @author [Frank](jiehan.guo@dfrobot.com)
+ * @version  V1.0
+ * @date  2019-03-12
+ * @url https://github.com/DFRobot/DFRobot_BMP280
+ */
 
 #ifndef DFROBOT_BMP280_H
 #define DFROBOT_BMP280_H
@@ -29,9 +22,10 @@
 #endif
 
 class DFRobot_BMP280 {
-// defines
+
 public:
   /**
+   * @enum eStatus_t
    * @brief Enum global status
    */
   typedef enum {
@@ -56,15 +50,17 @@ public:
   } sRegStatus_t;
 
   /**
+   * @enum eCtrlMeasMode_t
    * @brief Enum control measurement mode (power)
    */
   typedef enum {
-    eCtrlMeasMode_sleep,
-    eCtrlMeasMode_forced,
-    eCtrlMeasMode_normal = 0x03
+    eCtrlMeasModeSleep,
+    eCtrlMeasModeForced,
+    eCtrlMeasModeNormal = 0x03
   } eCtrlMeasMode_t;
 
   /**
+   * @enum  eSampling_t
    * @brief Enum sampling
    */
   typedef enum {
@@ -88,6 +84,7 @@ public:
   } eConfigSpi3w_en_t;
 
   /**
+   * @enum eConfigFilter_t
    * @brief Enum config filter
    */
   typedef enum {
@@ -99,10 +96,11 @@ public:
   } eConfigFilter_t;
 
   /**
+   * @enum eConfigTStandby_t
    * @brief Enum config standby time, unit ms
    */
   typedef enum {
-    eConfigTStandby_0_5,    // 0.5 ms
+    eConfigTStandby_0_5,    /**< 0.5 ms */
     eConfigTStandby_62_5,
     eConfigTStandby_125,
     eConfigTStandby_250,
@@ -148,70 +146,79 @@ public:
     sRegTemp_t    temp;
   } sRegs_t;
 
-// functions
 public:
   DFRobot_BMP280();
 
   /**
+   * @fn begin
    * @brief begin Sensor begin
    * @return Enum of eStatus_t
    */
-  eStatus_t   begin();
+  eStatus_t begin();
 
   /**
+   * @fn getTemperature
    * @brief getTemperature Get temperature
    * @return Temprature in Celsius
    */
-  float       getTemperature();
+  float  getTemperature();
 
   /**
+   * @fn getPressure
    * @brief getPressure Get pressure
    * @return Pressure in pa
    */
-  uint32_t    getPressure();
+  uint32_t getPressure();
 
   /**
+   * @fn calAltitude
    * @brief calAltitude Calculate altitude
    * @param seaLevelPressure Sea level pressure
    * @param pressure Pressure in pa
    * @return Altitude in meter
    */
-  float       calAltitude(float seaLevelPressure, uint32_t pressure);
+  float calAltitude(float seaLevelPressure, uint32_t pressure);
 
   /**
+   * @fn reset
    * @brief reset Reset sensor
    */
-  void    reset();
+  void reset();
 
   /**
+   * @fn setCtrlMeasMode
    * @brief setCtrlMeasMode Set control measure mode
    * @param eMode One enum of eCtrlMeasMode_t
    */
-  void    setCtrlMeasMode(eCtrlMeasMode_t eMode);
+  void setCtrlMeasMode(eCtrlMeasMode_t eMode);
 
   /**
+   * @fn setCtrlMeasSamplingTemp
    * @brief setCtrlMeasSamplingTemp Set control measure temperature oversampling
    * @param eSampling One enum of eSampling_t
    */
-  void    setCtrlMeasSamplingTemp(eSampling_t eSampling);
+  void setCtrlMeasSamplingTemp(eSampling_t eSampling);
 
   /**
+   * @fn setCtrlMeasSamplingPress
    * @brief setCtrlMeasSamplingPress Set control measure pressure oversampling
    * @param eSampling One enum of eSampling_t
    */
-  void    setCtrlMeasSamplingPress(eSampling_t eSampling);
+  void setCtrlMeasSamplingPress(eSampling_t eSampling);
 
   /**
+   * @fn setConfigFilter
    * @brief setConfigFilter Set config filter
    * @param eFilter One enum of eConfigFilter_t
    */
-  void    setConfigFilter(eConfigFilter_t eFilter);
+  void setConfigFilter(eConfigFilter_t eFilter);
 
   /**
+   * @fn setConfigTStandby
    * @brief setConfigTStandby Set config standby time
    * @param eT One enum of eConfigTStandby_t
    */
-  void    setConfigTStandby(eConfigTStandby_t eT);
+  void setConfigTStandby(eConfigTStandby_t eT);
 
 protected:
   void    getCalibrate();
@@ -225,12 +232,9 @@ protected:
   virtual void    writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len) = 0;
   virtual void    readReg(uint8_t reg, uint8_t *pBuf, uint16_t len) = 0;
 
-// variables
+
 public:
-  /**
-   * @brief lastOperateStatus Last operate status
-   */
-  eStatus_t   lastOperateStatus;
+  eStatus_t   lastOperateStatus; /**< lastOperateStatus Last operate status*/
 
 protected:
   int32_t   _t_fine;
@@ -241,14 +245,16 @@ protected:
 class DFRobot_BMP280_IIC : public DFRobot_BMP280 {
 public:
   /**
+   * @enum eSdo_t
    * @brief Enum pin sdo states
    */
   typedef enum {
-    eSdo_low,
-    eSdo_high
+    eSdoLow,
+    eSdoHigh
   } eSdo_t;
 
   /**
+   * @fn DFRobot_BMP280_IIC
    * @brief DFRobot_BMP280_IIC
    * @param pWire Which TwoWire peripheral to operate
    * @param eSdo Pin sdo status
